@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Grid</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    .square {
+        width: 15px;
+        height: 15px;
+        border: 1px solid black;
+        position: absolute;
+    }
+</style>
+</head>
+<body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const container = document.body;
+        const numRows = 111.111111;
+        const numCols = 111.111111;
+        const squareSize = 15;
+        window.coor = []; // Array to store coordinates
+        
+        function createSquare(row, col) {
+            const square = document.createElement('div');
+            square.className = 'square';
+            square.style.top = (row * squareSize) + 'px';
+            square.style.left = (col * squareSize) + 'px';
+            container.appendChild(square);
+            
+            square.addEventListener('click', function() {
+                square.style.backgroundColor ='green';
+                const coordinates = {x: col * squareSize*30, y: row * squareSize*30};
+                console.log(coordinates);
+                if (!coor.some(coord => coord.x === coordinates.x && coord.y === coordinates.y)) {
+                    coor.push(coordinates);
+                }
+            });
+
+            square.addEventListener('contextmenu', function(event) {
+                event.preventDefault(); // Prevent default right-click behavior
+                square.style.backgroundColor ='';
+                const coordinates = {x: col * squareSize*30, y: row * squareSize*30};
+                const index = coor.findIndex(coord => coord.x === coordinates.x && coord.y === coordinates.y);
+                if (index !== -1) {
+                    coor.splice(index, 1); // Remove the coordinates from the array
+                }
+            });
+        }
+        
+        for (let row = 0; row < numRows; row++) {
+            for (let col = 0; col < numCols; col++) {
+                createSquare(row, col);
+            }
+        }
+    });
+</script>
+</body>
+</html>
